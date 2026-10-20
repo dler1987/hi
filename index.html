@@ -1,0 +1,392 @@
+
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home İstanbul - Leave Request</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 25px 12px;
+  background: #f2f4f7;
+  color: #263445;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 760px;
+  margin: auto;
+  padding: 28px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 5px 25px #00000012;
+}
+
+header {
+  text-align: center;
+  border-bottom: 2px solid #173b60;
+  padding-bottom: 18px;
+  margin-bottom: 24px;
+}
+
+header h1 {
+  color: #173b60;
+  margin-bottom: 8px;
+}
+
+.language {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.full { grid-column: 1 / -1; }
+
+label { font-weight: bold; }
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccd4df;
+  border-radius: 7px;
+  font-size: 15px;
+  background: white;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid #91b8df;
+}
+
+.duration {
+  margin-top: 22px;
+  padding: 18px;
+  background: #edf4fa;
+  border-radius: 9px;
+  text-align: center;
+}
+
+.duration strong {
+  display: block;
+  font-size: 30px;
+  color: #173b60;
+  margin-top: 8px;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+button {
+  flex: 1;
+  border: 0;
+  border-radius: 7px;
+  padding: 13px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.primary {
+  background: #173b60;
+  color: white;
+}
+
+.secondary {
+  background: #e7ebf0;
+  color: #263445;
+}
+
+@media (max-width: 560px) {
+  .grid { grid-template-columns: 1fr; }
+  .full { grid-column: auto; }
+  .container { padding: 18px; }
+}
+
+@media print {
+  body { background: white; padding: 0; }
+  .container { box-shadow: none; max-width: 100%; }
+  .language, .buttons { display: none; }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+  <div class="language">
+    <label for="lang" id="languageLabel">زمان / Language</label>
+    <select id="lang" onchange="changeLanguage()">
+      <option value="ku">کوردی</option>
+      <option value="en">English</option>
+      <option value="tr">Türkçe</option>
+      <option value="ar">العربية</option>
+    </select>
+  </div>
+
+  <header>
+    <h1>HOME İSTANBUL</h1>
+    <h2 id="formTitle">فۆڕمی داواکاری مۆڵەت</h2>
+  </header>
+
+  <form id="leaveForm">
+    <div class="grid">
+
+      <div class="field">
+        <label id="employeeLabel" for="employee">ناوی کارمەند</label>
+        <input id="employee" required>
+      </div>
+
+      <div class="field">
+        <label id="codeLabel" for="code">کۆدی کارمەند</label>
+        <input id="code" required>
+      </div>
+
+      <div class="field">
+        <label id="branchLabel" for="branch">لق</label>
+        <select id="branch" required>
+          <option value="Erbil">هەولێر</option>
+          <option value="Duhok">دهۆک</option>
+          <option value="Sulaymaniyah">سلێمانی</option>
+          <option value="Kirkuk">کەرکووک</option>
+          <option value="Baghdad">بەغدا</option>
+          <option value="Head Office">ئۆفیسی سەرەکی</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label id="departmentLabel" for="department">بەش</label>
+        <input id="department" required>
+      </div>
+
+      <div class="field full">
+        <label id="typeLabel" for="leaveType">جۆری مۆڵەت</label>
+        <select id="leaveType">
+          <option value="annual">مۆڵەتی ساڵانە</option>
+          <option value="sick">مۆڵەتی نەخۆشی</option>
+          <option value="unpaid">مۆڵەتی بێ مووچە</option>
+          <option value="emergency">مۆڵەتی فریاکەوتن</option>
+          <option value="other">جۆری تر</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label id="startLabel" for="startDate">بەرواری دەستپێک</label>
+        <input type="date" id="startDate" required>
+      </div>
+
+      <div class="field">
+        <label id="endLabel" for="endDate">بەرواری کۆتایی</label>
+        <input type="date" id="endDate" required>
+      </div>
+
+      <div class="field full">
+        <label id="reasonLabel" for="reason">هۆکاری داواکاری</label>
+        <textarea id="reason" rows="3"></textarea>
+      </div>
+
+    </div>
+
+    <div class="duration" aria-live="polite">
+      <span id="durationLabel">ماوەی مۆڵەت بە ڕۆژ</span>
+      <strong id="days">—</strong>
+      <span id="daysUnit">ڕۆژ</span>
+      <p id="dateError" style="color:#b42318"></p>
+    </div>
+
+    <div class="buttons">
+      <button type="submit" class="primary" id="printButton">
+        چاپکردنی فۆڕم
+      </button>
+      <button type="reset" class="secondary" id="resetButton">
+        پاککردنەوە
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+const translations = {
+  ku: {
+    dir:"rtl", title:"فۆڕمی داواکاری مۆڵەت",
+    employee:"ناوی تەواوی کارمەند", code:"کۆدی کارمەند",
+    branch:"لق", department:"بەش", type:"جۆری مۆڵەت",
+    start:"بەرواری دەستپێک", end:"بەرواری کۆتایی",
+    reason:"هۆکاری داواکاری مۆڵەت",
+    duration:"ماوەی مۆڵەت بە ڕۆژ", day:"ڕۆژ",
+    print:"چاپکردنی فۆڕم", reset:"پاککردنەوە",
+    error:"بەرواری کۆتایی نابێت پێش بەرواری دەستپێک بێت.",
+    required:"تکایە بەروارەکان دیاری بکە.",
+    annual:"مۆڵەتی ساڵانە", sick:"مۆڵەتی نەخۆشی",
+    unpaid:"مۆڵەتی بێ مووچە", emergency:"مۆڵەتی فریاکەوتن",
+    other:"جۆری تر",
+    branches:["هەولێر","دهۆک","سلێمانی","کەرکووک","بەغدا","ئۆفیسی سەرەکی"]
+  },
+  en: {
+    dir:"ltr", title:"Employee Leave Request Form",
+    employee:"Employee Full Name", code:"Employee ID",
+    branch:"Branch", department:"Department", type:"Leave Type",
+    start:"Start Date", end:"End Date", reason:"Reason for Leave",
+    duration:"Leave Duration", day:"days",
+    print:"Print Form", reset:"Reset Form",
+    error:"End date cannot be before start date.",
+    required:"Please select both dates.",
+    annual:"Annual Leave", sick:"Sick Leave",
+    unpaid:"Unpaid Leave", emergency:"Emergency Leave",
+    other:"Other",
+    branches:["Erbil","Duhok","Sulaymaniyah","Kirkuk","Baghdad","Head Office"]
+  },
+  tr: {
+    dir:"ltr", title:"Personel İzin Talep Formu",
+    employee:"Personelin Adı Soyadı", code:"Personel Kodu",
+    branch:"Şube", department:"Departman", type:"İzin Türü",
+    start:"Başlangıç Tarihi", end:"Bitiş Tarihi",
+    reason:"İzin Nedeni", duration:"İzin Süresi", day:"gün",
+    print:"Formu Yazdır", reset:"Formu Temizle",
+    error:"Bitiş tarihi başlangıç tarihinden önce olamaz.",
+    required:"Lütfen her iki tarihi seçin.",
+    annual:"Yıllık İzin", sick:"Hastalık İzni",
+    unpaid:"Ücretsiz İzin", emergency:"Acil İzin",
+    other:"Diğer",
+    branches:["Erbil","Duhok","Süleymaniye","Kerkük","Bağdat","Merkez Ofis"]
+  },
+  ar: {
+    dir:"rtl", title:"استمارة طلب إجازة الموظف",
+    employee:"اسم الموظف الكامل", code:"الرقم الوظيفي",
+    branch:"الفرع", department:"القسم", type:"نوع الإجازة",
+    start:"تاريخ البدء", end:"تاريخ الانتهاء",
+    reason:"سبب طلب الإجازة", duration:"مدة الإجازة", day:"يوم",
+    print:"طباعة الاستمارة", reset:"مسح الاستمارة",
+    error:"لا يمكن أن يسبق تاريخ الانتهاء تاريخ البدء.",
+    required:"يرجى تحديد التاريخين.",
+    annual:"إجازة سنوية", sick:"إجازة مرضية",
+    unpaid:"إجازة بدون راتب", emergency:"إجازة طارئة",
+    other:"أخرى",
+    branches:["أربيل","دهوك","السليمانية","كركوك","بغداد","المكتب الرئيسي"]
+  }
+};
+
+const ids = {
+  formTitle:"title",
+  employeeLabel:"employee",
+  codeLabel:"code",
+  branchLabel:"branch",
+  departmentLabel:"department",
+  typeLabel:"type",
+  startLabel:"start",
+  endLabel:"end",
+  reasonLabel:"reason",
+  durationLabel:"duration",
+  printButton:"print",
+  resetButton:"reset"
+};
+
+function changeLanguage() {
+  const lang = document.getElementById("lang").value;
+  const t = translations[lang];
+
+  document.documentElement.lang = lang;
+  document.documentElement.dir = t.dir;
+
+  for (const [id, key] of Object.entries(ids)) {
+    document.getElementById(id).textContent = t[key];
+  }
+
+  const types = ["annual","sick","unpaid","emergency","other"];
+  document.querySelectorAll("#leaveType option").forEach((option, i) => {
+    option.textContent = t[types[i]];
+  });
+
+  document.querySelectorAll("#branch option").forEach((option, i) => {
+    option.textContent = t.branches[i];
+  });
+
+  calculateDays();
+}
+
+function calculateDays() {
+  const lang = document.getElementById("lang").value;
+  const t = translations[lang];
+  const start = document.getElementById("startDate").value;
+  const end = document.getElementById("endDate").value;
+  const daysElement = document.getElementById("days");
+  const errorElement = document.getElementById("dateError");
+
+  errorElement.textContent = "";
+  daysElement.textContent = "—";
+
+  if (!start || !end) return;
+
+  // UTC prevents daylight-saving changes from affecting the calculation.
+  const startTime = Date.parse(start + "T00:00:00Z");
+  const endTime = Date.parse(end + "T00:00:00Z");
+
+  if (endTime < startTime) {
+    errorElement.textContent = t.error;
+    return;
+  }
+
+  // Both the first and last day are included.
+  const totalDays = Math.round(
+    (endTime - startTime) / 86400000
+  ) + 1;
+
+  daysElement.textContent = totalDays;
+  document.getElementById("daysUnit").textContent = t.day;
+}
+
+document.getElementById("startDate")
+  .addEventListener("change", calculateDays);
+
+document.getElementById("endDate")
+  .addEventListener("change", calculateDays);
+
+document.getElementById("leaveForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const lang = document.getElementById("lang").value;
+  const t = translations[lang];
+
+  if (!document.getElementById("startDate").value ||
+      !document.getElementById("endDate").value) {
+    document.getElementById("dateError").textContent = t.required;
+    return;
+  }
+
+  calculateDays();
+
+  if (document.getElementById("dateError").textContent) return;
+
+  window.print();
+});
+
+document.getElementById("leaveForm").addEventListener("reset", function() {
+  setTimeout(() => {
+    document.getElementById("days").textContent = "—";
+    document.getElementById("dateError").textContent = "";
+  }, 0);
+});
+
+changeLanguage();
+</script>
+</body>
+</html>
